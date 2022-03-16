@@ -129,7 +129,7 @@ const reservetionCheck = (tee) => {
       return;
     }
 
-    /**/
+    // GO TO CHECK TEES AVAILABLE
     await page.goto(link, {'timeout': 10000, 'waitUntil':'load'})
     await waitTillHTMLRendered(page)
     const data = await page.content()
