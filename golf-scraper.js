@@ -60,7 +60,7 @@ const checkDate = (dataBoxes) => {
   return {  dateIsOk: false}
 }
 
-const reservetionCheck = (tee) => {
+const reservationCheck = (tee) => {
   const {  time: timeTee,
     placeInfo1,
     placeInfo2,
@@ -74,6 +74,11 @@ const reservetionCheck = (tee) => {
       placeInfo4.available].filter(ok => ok).length >= available
 }
 
+// constants
+const LOGIN_URL = 'https://www.golfpalermo.com/?page=login&url=?page%3Dmyaccount_misreservas';
+const RESERVATION_STEP_1_URL = 'https://www.golfpalermo.com/?page=reservas_step1';
+const MY_RESERVATIONS_URL = 'https://www.golfpalermo.com/index.php?page=myaccount_misreservas';
+
 (async () => {
   // PARAMETERS
   //
@@ -85,7 +90,7 @@ const reservetionCheck = (tee) => {
       const page = await browser.newPage();
 
       await page.setViewport({ width: 1200, height: 1000});
-      await page.goto('https://www.golfpalermo.com/?page=login&url=?page%3Dmyaccount_misreservas');
+      await page.goto(LOGIN_URL);
       
       await page.focus('#usuario')
       await page.keyboard.type(process.env.USER_GOLF)
@@ -96,7 +101,7 @@ const reservetionCheck = (tee) => {
       await page.click("#Ingresar");
     
 
-      await page.goto("https://www.golfpalermo.com/?page=reservas_step1", { timeout:0 })
+      await page.goto(RESERVATION_STEP_1_URL, { timeout:0 })
 
       // Reserve links
       const elementHandles = await page.$$('.bigbtn');
@@ -112,7 +117,7 @@ const reservetionCheck = (tee) => {
         elementHandlesData.map(handle => handle)
       );
 
-      // Reverse info
+      // Reserve info
       const dataBox =  await Promise.all(propertyJsHandlesData.map(async (handle, index) => {
         const [day, dayNumber, month,,,,,,available ] = (await (await handle.getProperty('innerText')).jsonValue()).split("\n")
         return { 
@@ -138,8 +143,8 @@ const reservetionCheck = (tee) => {
       const t = DOM.window.document.querySelector("#gridteetimes_row_0");
   
 
-      const real = Array.from(t.rows).map((tr, row_ind) => {
-        const [timeStr, place1 = "available" , place2 = "available", place3 = "available", place4 = "available" ] =  Array.from(tr.cells);
+      const real = Array.from(t.rows).map((tr) => {
+        const [timeStr, place1, place2, place3, place4 ] = Array.from(tr.cells);
         const time = timeStr.textContent.substring(0,5);
 
         const placeInfo1 = {
@@ -167,6 +172,7 @@ const reservetionCheck = (tee) => {
         }  
       });
 
+      let save = false;
       await real.forEach(async tee => {
         const {
           placeInfo1,
@@ -174,7 +180,7 @@ const reservetionCheck = (tee) => {
           placeInfo3,
           placeInfo4} = tee;
         
-          if(reservetionCheck(tee)){
+          if(reservationCheck(tee) && !save){
             console.log(tee)
             if(placeInfo1.available){
               await page.click(`#${placeInfo1.attrs.id}`);
@@ -188,16 +194,18 @@ const reservetionCheck = (tee) => {
             if(placeInfo4.available){
               await page.click(`#${placeInfo4.attrs.id}`);
             }
+            save = true;
           } 
       });
+
       await waitTillHTMLRendered(page);
       await page.click("#BtnReservar");
 
       // PRINT RESERVATION IF EXIST
       await waitTillHTMLRendered(page);
-      await page.goto("https://www.golfpalermo.com/index.php?page=myaccount_misreservas", {'timeout': 0, 'waitUntil':'load'});
+      await page.goto(MY_RESERVATIONS_URL, {'timeout': 0, 'waitUntil':'load'});
       await waitTillHTMLRendered(page);
-      const dataReserve = await page.content()
+      const dataReserve = await page.content();
       const domReserve = new jsdom.JSDOM(dataReserve);
       const reservationOk = !domReserve.window.document.querySelector(".colsinreserva").textContent.replace(/\s/g, '').includes("Ustednoposeeningunareservavigente")
       if (reservationOk) {
