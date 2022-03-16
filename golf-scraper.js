@@ -125,6 +125,10 @@ const reservetionCheck = (tee) => {
     const { dateIsOk, link } = checkDate(dataBox);
     if (!dateIsOk) {
       console.log("Not today");
+      const currentDay = new Date().toLocaleString("es-AR", {timeZone: "America/Argentina/Buenos_Aires"}).replaceAll("/","-").replace(/\s/g, '');
+      await page.screenshot({ 
+        path: `${currentDay}.png`
+      });
       await browser.close();
       return;
     }
