@@ -1,0 +1,229 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>Campo de Golf de la Ciudad | Powered by SIMPLEMENTEGOLF.com</title>
+
+  <link rel="stylesheet" type="text/css" href="templates/1/styles/classic/css/common.css">
+  <link rel="stylesheet" type="text/css" href="templates/1/styles/classic/css/common_dynamic.php">
+  <link rel="stylesheet" type="text/css" href="templates/1/styles/classic/css/weather.css">
+  <link rel="stylesheet" type="text/css" href="templates/1/styles/classic/css/mnunav_myaccount.css">
+  <link rel="stylesheet" type="text/css" href="libs/lightbox/css/jquery.lightbox-0.5.css">
+  <script type="text/javascript" src="libs/jquery/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" src="libs/jquery-ui-1.9.1.custom/js/jquery-ui-1.9.1.custom.min.js"></script>
+
+  <!--	<script type="text/javascript" src="-->
+  <!--zweather/jquery.zweatherfeed.js" ></script>-->
+  <script type="text/javascript" src="libs/lightbox/js/jquery.lightbox-0.5.js"></script>
+  <script type="text/javascript" src="js/mnunav_myaccount.js"></script>
+
+  <script type="text/javascript" src="js/common.js"></script>
+  <!--	<script type="text/javascript" src="js/weather.php" ></script>-->
+
+  <script type="text/javascript">
+    if (($.browser.msie) && ($.browser.version <= 7)) {
+      window.location = "error.php";
+    }
+  </script>
+</head>
+
+<body>
+  <noscript>Tu navegador no soporta Javascript. Para ingresar a nuestro Sitio Oficial es necesario que tu navegador
+    soporte JavaScript.</noscript>
+
+  <div id="Loading" style="display:none;"><img src="images/loading.gif" width="20px" alt=""
+      style="vertical-align:middle;"> <span>Cargando... </span></div>
+
+  <div id="top">
+    <div class="content">
+      <script>
+
+        $(document).ready(function () {
+
+          $(document).loadText(1, 10000, 1);
+        });
+
+        $.fn.loadText = function (canchas, interval, cancha_id) {
+          return this.each(function () {
+
+            if (canchas > 1) {
+              if (cancha_id > 1) {
+                var i_ant = cancha_id - 1;
+                var obj = $('#cancha_' + i_ant);
+                obj.fadeOut('slow', function () {
+                  var obj2 = $('#cancha_' + cancha_id);
+                  obj2.fadeIn('slow');
+
+                });
+              } else {
+                var i_ant = canchas;
+
+                var obj = $('#cancha_' + i_ant);
+                obj.fadeOut('slow', function () {
+                  var obj2 = $('#cancha_' + cancha_id);
+                  obj2.fadeIn('slow');
+
+                });
+              }
+            }
+            if (canchas > 1) {
+              timeOut = setTimeout(function () { $(document).loadText(canchas, interval, (cancha_id == canchas ? 1 : cancha_id + 1)) }, interval);
+            }
+          });
+        }
+      </script>
+      <div class="mnunav-top">
+        <div class="cancha-status cleft">
+          <div id="cancha_1">
+            <div class="cancha-estado">Estado de la Cancha Cancha STD: <span class="estado">ABIERTO</span></div>
+            <div class="cancha-estado-lastupd"><span>| Ultima Actualización: Mar 15, 05:13 Hs</span></div>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="info-clima cright">
+          <div id="clima"></div>
+        </div>
+        <div class="clear"></div>
+        <div id="text-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="header">
+    <div class="content">
+
+      <!-- ISOLOGO -->
+      <div id="isologo">
+        <img src="/upload_isg/general/isologo.png" border="0">
+      </div>
+
+      <!-- MAIN SP -->
+      <div id="main_sp" class="sponsors hidden">
+      </div>
+
+      <!-- CLEAR -->
+      <div class="clear"></div>
+    </div>
+  </div>
+
+  <div id="mnunav">
+    <div class="content">
+      <div class="section section03 cleft">
+        <a href="/" class="mnuopc-img mnuopc-home"></a>
+      </div>
+      <div class="section section04 cleft">
+        <a href="?page=contactus" class="mnuopc-img mnuopc-contactus"></a>
+      </div>
+      <div class="section section01 cleft">
+        <ul>
+          <li><a href="?page=aboutus">INSTITUCIONAL</a></li>
+          <li><a href="?page=golfcourse">CAMPO DE GOLF</a></li>
+          <li><a href="?page=resultados">RESULTADOS</a></li>
+          <li><a href="?page=reservas_step1">RESERVAS</a></li>
+        </ul>
+      </div>
+      <div class="section section02 cright">
+        <ul>
+          <li class="opc-myaccount logged"><a id="opc-myaccount" href="#">MI CUENTA</a></li>
+          <li class="opc-myaccount opc-salir"><a href="logout.php">SALIR</a></li>
+        </ul>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+
+  <div id="myaccount-mnunav" class="myaccount-mnunav l-fullwidth" style="display:none">
+    <div class="subnav is-active">
+      <div class="subnav-container">
+        <div class="subnav-section l-table">
+          <div class="subnav-item l-cell l-w2 visual-format"><a href="?page=myaccount_misreservas"><img
+                src="images/ico_reservas.png"><span class="subnav-itemheader">MIS RESERVAS</span><br><span
+                class="subnav-itemtext">Mira, modifica o elimina tus reservas On-Line.</span></a></div>
+          <div class="subnav-item l-cell l-w2 visual-format"><a href="?page=myaccount_misestadisticas"><img
+                src="images/ico_scoring.png"><span class="subnav-itemheader">MIS ESTADISTICAS</span><br><span
+                class="subnav-itemtext">Conoce tu forma de juego y mejora dia a dia.</span></a></div>
+          <div class="subnav-item l-cell l-w2 visual-format"><a href="?page=myaccount_misdatos"><img
+                src="images/ico_micuenta.png"><span class="subnav-itemheader">MIS DATOS</span><br><span
+                class="subnav-itemtext">Mantenga su informacion actualizada.</span></a></div>
+          <div class="subnav-item l-cell l-w2 visual-format"><a href="?page=faq"><img src="images/ico_faq.png"><span
+                class="subnav-itemheader">FAQ</span><br><span class="subnav-itemtext">Encuentre una respuesta a las
+                preguntas frecuentes.</span></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="main">
+    <div class="content">
+      <link rel="stylesheet" type="text/css" href="templates/1/styles/classic/css/reservas.css">
+
+      <div id="reservas">
+
+        <div class="hidden">
+          <input type="hidden" name="torneo_id" id="torneo_id" value="3494">
+          <input type="hidden" name="ronda_nro" id="ronda_nro" value="1">
+        </div>
+
+        <div id="box_reservas" class="box">
+          <div class="header">
+            <h1>Reservas</h1>
+            <p>Para realizar una reserva por favor siga los siguientes pasos.</p>
+          </div>
+          <div class="divider-bottom"></div>
+          <div class="mnunav-steps">
+            <ul>
+              <li class="mnunav-steps-opc"><span class="num btnsilver">1</span><span class="step-desc">Seleccionar
+                  D√≠a</span></li>
+              <li class="mnunav-steps-opc"><span class="num btnsilver">2</span><span class="step-desc">Seleccionar
+                  Horarios</span></li>
+              <li class="mnunav-steps-opc selected"><span class="num btnblue">3</span><span class="step-desc">Inscribir
+                  Jugadores</span></li>
+            </ul>
+          </div>
+          <div class="divider-top"></div>
+          <div class="box-reservas-message">
+            <h4>Confirme la reserva inscribiendo los Jugadores.</h4>
+            <div class="reserva-codigo">Código de Reserva:<span class="codigo">#344257</span></div>
+            <div class="notas">
+              <p>Recuerde que deberá inscribir a los jugadores dentro de las próximas <b>48</b> hs, o antes de la fecha
+                de cierre de reserva. <br>Lo que ocurra primero. De lo contrario los lugares que no tengan jugadores
+                inscriptos serán dados de baja automáticamente.</p>
+              <p>Recibirá un Email con el detalle de su reserva.</p>
+            </div>
+            <div class="butnav">
+              <a href="?page=myaccount_misreservas" class="bigbtn btnblue button_form"><span>Inscribir luego</span></a>
+              <a href="?page=reservas_step4&amp;reserva_id=344257" class="bigbtn btnblue button_form"><span>Inscribir
+                  jugadores ahora</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sp_bottom">
+    <div class="content">
+      <div class="sp-bottom hidden">
+      </div>
+    </div>
+  </div>
+
+  <div id="bottom">
+    <div class="content">
+      <div class="section credits">
+        <div class="copyright cleft">© 2022. Todos los derechos reservados. </div>
+        <div class="poweredby cright"><a href="http://www.simplementegolf.com" target="_blank"><img
+              src="templates/1/styles/classic/css/../images/isologo_sg.png" border="0"></a></div>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bg">
+    <div class="bg-image"></div>
+  </div>
+
+
+</body>
+
+</html>
